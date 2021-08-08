@@ -4,13 +4,17 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/styles.css';
 import Random from './random.js';
 import Type from './type.js';
+import noDuplicate from './duplicate.js'
+
 function displayResults(response) {
-    if (response.activity) {
-        $('div#results').append(`<br><h3>${response.activity}.</h3><p>Type: ${response.type}.</p>`)
+    if (noDuplicate(response.activity)) {
+            $('div#results').append(`<br><h3>${response.activity}.</h3><p>Type: ${response.type}</p>`)
     } else {
-        $('div#results').append(`<br><h1>${response.error}<h1><p>I don't know how you broke it but you managed to. Congragradulations???</p>`)
+        console.log("duplicate avoided");
+        // $('div#results').append(`<br><h1>${response.error}<h1><p>I don't know how you broke it but you managed to. Congragradulations???</p>`)
     }
 }
+
 
 async function makeApiCall(type) {
     let response = null;
@@ -50,3 +54,4 @@ $(document).ready(function () {
     })
 });
 
+// https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=20&q=YOURKEYWORD&type=video&key=YOURAPIKEY
