@@ -3,21 +3,50 @@ import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/styles.css';
 import Random from './random.js';
-// import Type from './type.js';
+import Type from './type.js';
+function displayResults(response) {
+    if (response.activity) {
+        $('div#results').append(`<br><h3>${response.activity}.</h3><p>Type: ${response.type}.</p>`)
+    } else {
+        $('div#results').append(`<br><h1>${response.error}<h1><p>I don't know how you broke it but you managed to. Congragradulations???</p>`)
+    }
+}
 
-async function makeApiCall() {
-    //case random:
-    const response = await Random.getRandom();
-    // getElements(response);
-    console.log(response)
-  }
+async function makeApiCall(type) {
+    let response = null;
+    switch (type) {
+        case 'education':
+        case 'recreational':
+        case 'social':
+        case 'diy':
+        case 'charity':
+        case 'cooking':
+        case 'relaxation':
+        case 'music':
+        case 'busywork':
+            response = await Type.getThisType(type);
+            console.log(response);
+            displayResults(response);
+            break;
+        case 'random':
+            response = await Random.getRandom();
+            console.log(response);
+            displayResults(response);
+            break;
+        default:
+            response = await Random.getRandom();
+            console.log("somehow you broke something but here's a random activity for you :) " + response);
+            displayResults(response);
+            break;
+    }
 
-//   function getElements(response){
-//   }
+}
 
-$(document).ready(function(){
-  $('button').click(function(){
-    makeApiCall();
-  })
+$(document).ready(function () {
+    $('button').click(function () {
+        let type = $('select#option').val();
+        console.log(type);
+        makeApiCall(type);
+    })
 });
 
