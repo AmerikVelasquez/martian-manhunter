@@ -4,13 +4,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/styles.css';
 import Random from './random.js';
 import Type from './type.js';
-import noDuplicate from './duplicate.js'
+import noDuplicate from './duplicate.js';
+import Youtube from './youtube.js';
 
-function displayResults(response) {
+async function displayResults(response) {
     if (noDuplicate(response.activity)) {
-            $('div#results').append(`<br><h3>${response.activity}.</h3><p>Type: ${response.type}</p>`)
+        // await console.log(linkYoutube(response.activity))
+        $('div#results').append(`<br><h3><a href="https://www.youtube.com/watch?v=${await linkYoutube('how to ' + response.activity)}">${response.activity}.</a></h3><p>Type: ${response.type}</p>`)
+
     } else {
-        console.log("duplicate avoided");
+        await console.log("duplicate avoided");
         // $('div#results').append(`<br><h1>${response.error}<h1><p>I don't know how you broke it but you managed to. Congragradulations???</p>`)
     }
 }
@@ -45,13 +48,16 @@ async function makeApiCall(type) {
     }
 
 }
+async function linkYoutube(activity) {
+    let them = await Youtube.getYoutubeId(activity)
+    return them.items[0].id.videoId;
+}
 
 $(document).ready(function () {
     $('button').click(function () {
         let type = $('select#option').val();
         console.log(type);
         makeApiCall(type);
+        linkYoutube('how to make pancakes');
     })
 });
-
-// https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=20&q=YOURKEYWORD&type=video&key=YOURAPIKEY
