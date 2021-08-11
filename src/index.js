@@ -10,7 +10,7 @@ import Youtube from './youtube.js';
 async function displayResults(response) {
     if (noDuplicate(response.activity)) {
         // await console.log(linkYoutube(response.activity))
-        $('div#results').append(`<br><h3><a href="https://www.youtube.com/watch?v=${await linkYoutube('how to ' + response.activity)}">${response.activity}.</a></h3><p>Type: ${response.type}</p>`)
+        $('div#results').prepend(`<br><h3><a href="https://www.youtube.com/watch?v=${await linkYoutube('how to ' + response.activity)}">${response.activity}.</a></h3><p>Type: ${response.type}</p>`)
 
     } else {
         await console.log("duplicate avoided");
